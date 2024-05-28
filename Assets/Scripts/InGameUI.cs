@@ -1,15 +1,17 @@
 using UnityEngine;
 using TMPro;
 using MobileGame.Input;
-using System;
+using UnityEngine.SceneManagement;
 
 public class InGameUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI textMeshPro;
-    [SerializeField] private string newText;
+    private string newText;
 
     [SerializeField] private GameObject pauseMenu;
     private int _score = 0;
+
+    [SerializeField] private GameObject winningScreen;
 
 
     private void OnEnable() 
@@ -17,6 +19,7 @@ public class InGameUI : MonoBehaviour
         PlayerBrain.PauseHandler += ChangePauseState;
         PlayerBrain.JumpHandler += IncrementScore;
         PlayerBrain.FailHandler += LoseScore;
+        PlayerBrain.VictoryHandler += WinningScreen;
     }
 
     private void OnDisable() 
@@ -24,6 +27,7 @@ public class InGameUI : MonoBehaviour
        PlayerBrain.PauseHandler -= ChangePauseState;
        PlayerBrain.JumpHandler -= IncrementScore;
         PlayerBrain.FailHandler -= LoseScore;
+        PlayerBrain.VictoryHandler -= WinningScreen;
     }
 
     private void IncrementScore()
@@ -43,7 +47,17 @@ public class InGameUI : MonoBehaviour
         textMeshPro.text = scoreDefaulText + _score.ToString();
     }
 
-    private void ChangePauseState()
+    private void WinningScreen()
+    {
+        winningScreen.SetActive(true);
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void ChangePauseState()
     {
         if(pauseMenu.activeInHierarchy)
         {
@@ -55,5 +69,10 @@ public class InGameUI : MonoBehaviour
             Time.timeScale = 0f;
             pauseMenu.SetActive(true);
         }
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 }

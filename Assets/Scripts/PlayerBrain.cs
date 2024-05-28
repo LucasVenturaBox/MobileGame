@@ -13,6 +13,7 @@ namespace MobileGame.Input
         public static Action PauseHandler;
         public static Action JumpHandler;
         public static Action FailHandler;
+        public static Action VictoryHandler;
 
         #region Unity Methods
         private void OnEnable()

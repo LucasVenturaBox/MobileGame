@@ -55,7 +55,6 @@ namespace MobileGame.Move
 
             transform.position += (Vector3.right * direction.x + Vector3.forward * direction.y) * _distanceMultiplier;
 
-            PlayerBrain.JumpHandler?.Invoke();
         }
 
         private bool IsGrounded()

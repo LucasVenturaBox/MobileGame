@@ -18,11 +18,11 @@ namespace MobileGame.Grid
 
         //For now only make the grid with the exact same number of rows and collumns
 
-        private List<GameObject> _gridCellPositions = new List<GameObject>();
+        private List<GameObject> _gridCells = new List<GameObject>();
 
         //Getter
         public float CellSize => _gridCellSize;
-        public List<GameObject> GridCellPositions => _gridCellPositions;
+        public List<GameObject> GridCellPositions => _gridCells;
 
         private void Start()
         {
@@ -55,7 +55,7 @@ namespace MobileGame.Grid
                     newCell.name = "Cell (" + i +", "+ j + ")";
                     newCell.layer = LayerMask.NameToLayer("Ground");
 
-                    _gridCellPositions.Add(newCell);
+                    _gridCells.Add(newCell);
 
                 }
             }
@@ -67,7 +67,7 @@ namespace MobileGame.Grid
 
             GameObject newDeathZone = new GameObject();
 
-            Vector3 middleOfGrid = Vector3.Lerp(_gridCellPositions[_gridCellPositions.Count-1].transform.position,_gridCellPositions[0].transform.position, 0.5f);
+            Vector3 middleOfGrid = Vector3.Lerp(_gridCells[_gridCells.Count-1].transform.position,_gridCells[0].transform.position, 0.5f);
 
             newDeathZone.transform.parent = transform;
             newDeathZone.transform.position = middleOfGrid + Vector3.down*2;
@@ -83,7 +83,7 @@ namespace MobileGame.Grid
         {
             GameObject newObstacleSpawner = new GameObject();
             newObstacleSpawner.name = "ObstacleSpawner";
-            newObstacleSpawner.AddComponent<ObstacleSpawner>().InitializeObstacleSpawner(_gridCellPositions,_obstacleMesh,_obstacleMaterial);
+            newObstacleSpawner.AddComponent<ObstacleSpawner>().InitializeObstacleSpawner(_gridCells,_obstacleMesh,_obstacleMaterial);
         }
 
     }
