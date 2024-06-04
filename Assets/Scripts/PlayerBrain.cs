@@ -10,10 +10,8 @@ namespace MobileGame.Input
         private InputActionAsset _inputActionAsset;
         private InputActionMap _inputGameplayActionMap;
         private Movement _movement;
-        public static Action PauseHandler;
-        public static Action JumpHandler;
-        public static Action FailHandler;
-        public static Action VictoryHandler;
+
+        public static Action PauseHandler;    
 
         #region Unity Methods
         private void OnEnable()

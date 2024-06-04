@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using MobileGame.Input;
 using UnityEngine;
@@ -15,6 +15,9 @@ public class ObstacleSpawner : MonoBehaviour
     private List<GameObject> _obstaclesInWave = new List<GameObject>();
     private int _prevExcludedIndex;
     private bool _stopped;
+
+    public static Action VictoryHandler;
+    public static Action SuccessfulWaveHandler;
 
     public void InitializeObstacleSpawner(List<GameObject> cellList, Mesh obstacleMesh, Material obstacleMaterial)
     {
@@ -48,7 +51,7 @@ public class ObstacleSpawner : MonoBehaviour
     private void SpawnObstacles()
     {
 
-        int excludedCell = Random.Range(0, _gridCells.Count - 1);
+        int excludedCell = UnityEngine.Random.Range(0, _gridCells.Count - 1);
 
         foreach (var cell in _gridCells)
         {
@@ -85,7 +88,7 @@ public class ObstacleSpawner : MonoBehaviour
     {
         if(_obstaclesInWave.Count > 0) _obstaclesInWave.Remove(obstacleToRemove.gameObject);
 
-        if(_obstaclesInWave.Count <= 0) PlayerBrain.JumpHandler?.Invoke();
+        if(_obstaclesInWave.Count <= 0) SuccessfulWaveHandler?.Invoke();
     }
 
     private void CheckWinningCondition()
@@ -94,7 +97,7 @@ public class ObstacleSpawner : MonoBehaviour
         Debug.Log(_timeBetweenWaves);
         if(_timeBetweenWaves <= 1.5f)
         {
-            PlayerBrain.VictoryHandler?.Invoke();
+            VictoryHandler?.Invoke();
             _stopped = true;
         }
     }

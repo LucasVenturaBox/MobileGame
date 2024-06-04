@@ -1,3 +1,4 @@
+using System;
 using MobileGame.Input;
 using UnityEngine;
 
@@ -14,6 +15,8 @@ namespace MobileGame.Move
         private Ray _ray;
         private RaycastHit _hit;
         private bool _isOverSomething;
+
+        public static Action FailHandler;
 
         private void Start() {
             
@@ -69,7 +72,7 @@ namespace MobileGame.Move
 
         public void Die()
         {    
-            PlayerBrain.FailHandler?.Invoke();
+            FailHandler?.Invoke();
             transform.position = _initialPosition.transform.position;
         }
 

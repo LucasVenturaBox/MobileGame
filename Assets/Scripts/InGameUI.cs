@@ -2,6 +2,8 @@ using UnityEngine;
 using TMPro;
 using MobileGame.Input;
 using UnityEngine.SceneManagement;
+using System;
+using MobileGame.Move;
 
 public class InGameUI : MonoBehaviour
 {
@@ -13,21 +15,23 @@ public class InGameUI : MonoBehaviour
 
     [SerializeField] private GameObject winningScreen;
 
+    public static Action QuitGameHandler;
+
 
     private void OnEnable() 
     {
         PlayerBrain.PauseHandler += ChangePauseState;
-        PlayerBrain.JumpHandler += IncrementScore;
-        PlayerBrain.FailHandler += LoseScore;
-        PlayerBrain.VictoryHandler += WinningScreen;
+        ObstacleSpawner.SuccessfulWaveHandler += IncrementScore;
+        Movement.FailHandler += LoseScore;
+        ObstacleSpawner.VictoryHandler += WinningScreen;
     }
 
     private void OnDisable() 
     {
-       PlayerBrain.PauseHandler -= ChangePauseState;
-       PlayerBrain.JumpHandler -= IncrementScore;
-        PlayerBrain.FailHandler -= LoseScore;
-        PlayerBrain.VictoryHandler -= WinningScreen;
+        PlayerBrain.PauseHandler -= ChangePauseState;
+        ObstacleSpawner.SuccessfulWaveHandler -= IncrementScore;
+        Movement.FailHandler -= LoseScore;
+        ObstacleSpawner.VictoryHandler -= WinningScreen;
     }
 
     private void IncrementScore()
@@ -59,20 +63,22 @@ public class InGameUI : MonoBehaviour
 
     public void ChangePauseState()
     {
+        Debug.Log("Did Something");
+        if(pauseMenu == null) return;
+        Debug.Log("It is not null");
         if(pauseMenu.activeInHierarchy)
         {
             pauseMenu.SetActive(false);
-            Time.timeScale = 1f;
         }
         else
         {
-            Time.timeScale = 0f;
             pauseMenu.SetActive(true);
         }
     }
 
     public void Quit()
     {
-        Application.Quit();
+        QuitGameHandler?.Invoke();
     }
+    
 }
